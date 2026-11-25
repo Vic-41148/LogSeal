@@ -36,7 +36,7 @@ def train(dataset="dataset"):
     from sklearn.ensemble import IsolationForest
     _, X, _ = featurize(_load(os.path.join(dataset, "train.jsonl")))
     model = IsolationForest(random_state=42).fit(X)
-    thr = float(np.percentile(model.score_samples(X), 5))       # lower score = more abnormal
+    thr = float(np.percentile(model.score_samples(X), 1))       # 1% false-alarm budget on benign training windows
     joblib.dump({"model": model, "threshold": thr}, os.path.join(HERE, "model.joblib"))
     print(f"trained on {len(X)} benign windows, threshold {thr:.4f}")
 
