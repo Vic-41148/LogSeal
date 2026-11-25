@@ -52,6 +52,23 @@ P1 pull request #2 from @kshitijmarwah1 merged into `dev` as `592eba5`. It adds 
 
 P2 pull request #3 from @akash77007 merged into `dev` as `07fdbbc`. It escapes the vault name in the vault page, removes a trailing slash before vault URLs, and changes the page font sizes to `clamp()` values. All checks pass after the merge. A manual check with the name `<b>Vault</b>` rendered `<h1>&lt;b&gt;Vault&lt;/b&gt;</h1>`. A call to `witness.head("http://127.0.0.1:18999/")` returned the vault name and count.
 
+P2 pull request #4 from @akash77007 merged into `dev` as `cb6a984`. It rebuilds `app.py` as a bento dashboard with an off-white theme, top alerts and an activity chart. It also adds `docs/LogSeal.pptx` and `docs/TECH FUSION 4.0 report template.pptx`. CI passed on branch `ui` and on `dev`. After the merge, Ruff passes, the contract gate passes, 51 core tests pass, and all five demo acts pass.
+
+Browser checks on the merged console at `http://127.0.0.1:8501/`:
+
+| URL | Result |
+|---|---|
+| `?mock=ok` | `MOCK: OK`, `ALL CLEAR`, `2/2` vaults online |
+| `?mock=edit` | `MOCK: EDIT`, record 120 named, both vaults confirm |
+| `?mock=rewrite` | `MOCK: REWRITE`, `WITNESS_CONFLICT` at 120, both vaults disagree |
+| `?mock=offline` | `MOCK: OFFLINE`, `1/2` vaults online, `VAULT OFFLINE` banner |
+| `?stage=1&mock=edit` | Sidebar hidden, `LogSeal Stage View` title, red alarm visible |
+| live page | `LIVE · 2s REFRESH`, `2/2` vaults online, `ALL CLEAR` |
+
+The model fail-safe text is still in `app.py`. It says `Model not trained. Run make dataset then make train`. Both added `.pptx` files open as valid zip archives.
+
+A live edit test on the merged stack changed record 120 in `.run/dev/app.log.jsonl` from `srv-01` to `srv-02`. The generator was stopped first. The verifier reported `TAMPERED` in 0.11 s. The finding class was `EDIT`, the record was 120, and `confirmed_by` held `Vault 1` and `Vault 2`. The server tile disagreed. Both vault tiles agreed. The operator restored both files, and the verifier returned `OK`. The generator was restarted. The exact operator steps are in `docs/08_DEMO_AND_PITCH.md`.
+
 ## Benchmark detail
 
 ```

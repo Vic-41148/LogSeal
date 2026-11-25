@@ -23,7 +23,7 @@ Your `NAME` is your lane: `p1`, `p2`, `p3`, `p4`. Each name gets its own ports, 
 | P2-2 | P2 vault @akash77007 | Read the vault page from 3 m | Large name, count, fingerprint, red conflict strip |
 | P2-3 | P2 vault @akash77007 | Start two vaults and `curl` both | `/head`, `/entry/1`, `/append`, `/reset` answer |
 | P2-4 | P2 vault @akash77007 | Restart a vault after a conflict | Entries and conflict history survive |
-| P3-1 | P3 console | Open `?mock=ok`, `?mock=edit`, `?mock=rewrite` | Banner and all three tiles change correctly |
+| P3-1 | P3 console | Open `?mock=ok`, `?mock=edit`, `?mock=rewrite`, `?mock=offline` | Banner and all three tiles change correctly |
 | P3-2 | P3 console | Wire the real verifier | An edit turns the banner red in 3 s and shows the record |
 | P3-3 | P3 console | Kill one vault | That tile goes grey, the console keeps running |
 | P3-4 | P3 console | Projector test | Readable from the back of the room |
@@ -74,5 +74,5 @@ The lead owns integration. The lead does not take a code lane.
 
 - `app.py` is smoke-tested, not yet checked on the projector.
 - `metrics.json` and `bench.json` were measured by the lead on the development laptop. P4 must repeat them on the demo laptop. Exact output is in `docs/13_VERIFICATION.md`.
-- The real vault IPs are not in `config.json` yet. P2 owns that after the network check.
+- `config.json` holds the Tailscale IPs for `archlinux` and `vic`. TCP 8101 on `vic` is blocked. P2 owns the firewall check.
 - The P3 handle in `CODEOWNERS` is still a placeholder. P1, P2, P4 and lead handles are set.

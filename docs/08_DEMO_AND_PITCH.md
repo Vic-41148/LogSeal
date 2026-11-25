@@ -26,6 +26,45 @@ Nothing needs GPU. Roles are for visibility. Bring chargers and a power strip. A
 | Close | 20 s | Limits slide | "We detect tampering, we do not prevent it. Anything altered before sealing is out of scope. Our vaults are separate laptops on one hotspot; in production they sit in different organisations." |
 Stop `gen.py` before handing the file to the judge, and wait 3 seconds so the last line is sealed. Between runs: `attack.py restore` or the reset command.
 
+## Live edit cookbook
+
+Use this for act 2. The console URL must have no `?mock=` value. A `?mock=edit` URL is a preview only. The live page says `LIVE · 2s REFRESH`. The generator makes synthetic events, but the seal, the vaults and the verifier are real.
+
+On the victim laptop, run these commands in order. On Windows, stop the `gen.py` process in Task Manager.
+
+1. Stop the generator, wait 3 s, and back up both files:
+
+```bash
+kill $(python3 -c "import json; print(json.load(open('.run/dev/pids.json'))['gen'])")
+sleep 3
+cp .run/dev/app.log.jsonl /tmp/logseal-live-edit.bak
+cp .run/dev/ledger.jsonl /tmp/logseal-live-ledger.bak
+```
+
+2. Change record 120. This keeps the JSON valid:
+
+```bash
+python3 - <<'PY'
+p = '.run/dev/app.log.jsonl'
+lines = open(p, 'rb').read().split(b'\n')[:-1]
+lines[119] = lines[119].replace(b'"srv-01"', b'"srv-02"', 1)
+open(p, 'wb').write(b'\n'.join(lines) + b'\n')
+print(lines[119].decode())
+PY
+```
+
+3. Watch the projector. The banner turns red in about 2 s. It names record 120. The server tile shows ✘. Both vault tiles stay ✔. The verifier itself reports the edit in about 0.1 s.
+
+4. Restore both files, then restart the generator:
+
+```bash
+cp /tmp/logseal-live-edit.bak .run/dev/app.log.jsonl
+cp /tmp/logseal-live-ledger.bak .run/dev/ledger.jsonl
+python3 gen.py --config .run/dev/config.json --rate 2 &
+```
+
+The console returns to green after the restore. Use `python attack.py rewrite --config .run/dev/config.json --seq 120 --find grace --replace mallory` for act 3. Use `python attack.py restore --config .run/dev/config.json` to undo it.
+
 ## Explaining it to different people
 - **Anyone, one sentence:** "Hackers delete logs to hide; our system makes any edit or deletion set off an alarm."
 - **30-second camera analogy:** burglar steals the footage; we copy a sealed fingerprint of each recording to other places; if the footage changes, the fingerprints no longer match.

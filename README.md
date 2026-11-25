@@ -31,7 +31,7 @@ The private stack gives you two vaults, a generator and a console on your own po
 |---|---|
 | `seal.py`, `verify.py`, `witness.py` | Done. Covered by `tests/` and `seal.py --selftest` |
 | `gen.py`, `attack.py`, `bench.py`, `ml.py` | Done, tested |
-| `app.py` | Checked in a real browser: four mock states, stage mode and a live edit at 2.33 s. Projector test is still open |
+| `app.py` | Bento dashboard. Checked in a real browser: four mock states, stage mode, live page and a live edit at 2.33 s. Projector test is still open |
 | `metrics.json`, `bench.json` | Measured by the lead on the dev laptop. P4 must repeat them on the demo laptop |
 | `scripts/`, `tests/`, CI | Base ready for four parallel lanes |
 
@@ -72,6 +72,8 @@ Reset: stop `gen.py`, then `python attack.py restore` (after an attack) or `pyth
 | `docs/14_MODEL_REPORT.md` | Burst-detector design, exact numbers and improvement plan |
 | `docs/15_VIC_LAPTOP_HANDOFF.md` | Two-laptop vault setup on the `vic` laptop |
 | `docs/16_WINDOWS_TWO_LAPTOP_HANDOFF.md` | Two Windows laptops linked over Tailscale |
+| `docs/LogSeal.pptx` | Demo presentation deck |
+| `docs/TECH FUSION 4.0 report template.pptx` | Report template supplied by the event |
 | `docs/tasks/` | One brief per person |
 | `docs/08_DEMO_AND_PITCH.md` | Demo script and pitch |
 | `docs/09_TIMELINE_CUTS_FAILURES.md` | Timeboxes and cut order |
@@ -79,7 +81,7 @@ Reset: stop `gen.py`, then `python attack.py restore` (after an attack) or `pyth
 
 ## Notes
 
-- `?mock=ok|edit|rewrite` on the console URL previews the three states with no backend.
+- `?mock=ok|edit|rewrite|offline` on the console URL previews four states with no backend.
 - `?stage=1` hides the sidebar for the projector.
 - `LOGSEAL_CONFIG=config.local.json` makes the console use the fallback config.
 - Never call this a blockchain. Say: authenticated append-only ledger with independent witnesses.
