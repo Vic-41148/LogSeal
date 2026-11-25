@@ -2,7 +2,7 @@ PY ?= python3
 NAME ?= $(USER)
 VENV_BIN := $(if $(wildcard .venv/Scripts),.venv/Scripts,.venv/bin)
 
-.PHONY: help setup check test selftest lint ci demo-check stack demo down status reset bench dataset train eval clean
+.PHONY: help setup check test selftest lint ci demo-check stack demo down status reset bench dataset train eval model-sweep clean
 
 help:
 	@echo "make setup     create .venv and install everything"
@@ -20,6 +20,7 @@ help:
 	@echo "make dataset   write dataset/ for ml.py"
 	@echo "make train     train the burst model"
 	@echo "make eval      write metrics.json"
+	@echo "make model-sweep  five-seed score range"
 
 setup:
 	$(PY) -m venv .venv
@@ -69,6 +70,9 @@ train:
 
 eval:
 	$(PY) ml.py eval
+
+model-sweep:
+	$(PY) scripts/model_sweep.py
 
 clean:
 	rm -rf .run __pycache__ tests/__pycache__ .ruff_cache

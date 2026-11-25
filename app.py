@@ -138,7 +138,12 @@ def activity():
         cnt[s] = cnt.get(s, 0) + 1
     st.subheader("Activity (events per 10 seconds)")
     st.bar_chart(pd.Series({time.strftime("%H:%M:%S", time.gmtime(k)): v for k, v in sorted(cnt.items())}))
-    bad = [w["window_start"][11:19] for w in ml.flag_windows(evs) if w["flagged"]]
+    try:
+        bad = [w["window_start"][11:19] for w in ml.flag_windows(evs) if w["flagged"]]
+    except FileNotFoundError:
+        st.markdown('<div class="alarm" style="background:#fef3c7;border-color:#d97706;color:#78350f">Model not trained. Run <code>make dataset</code> then <code>make train</code>.</div>',
+                    unsafe_allow_html=True)
+        return
     if bad:
         st.markdown(f'<div class="alarm" style="background:#fef3c7;border-color:{AMBER};color:#78350f">Suspicious burst of failed logins around {", ".join(bad[-3:])}</div>',
                     unsafe_allow_html=True)
