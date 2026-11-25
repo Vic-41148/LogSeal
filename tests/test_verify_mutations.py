@@ -26,6 +26,16 @@ class VerifyMutations(unittest.TestCase):
     def test_clean_log_is_ok(self):
         self.assertEqual("OK", verify.verify(self.fresh(), use_witnesses=False)["status"])
 
+    def test_empty_log_is_ok(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            cfg = make_cfg(tmp)
+            result = verify.verify(cfg, use_witnesses=False)
+        self.assertEqual("OK", result["status"])
+        self.assertEqual(0, result["log_lines"])
+        self.assertEqual(0, result["ledger_entries"])
+        self.assertEqual([], result["findings"])
+        self.assertEqual([], result["feed"])
+
     def test_edit_one_character_is_edit_at_that_record(self):
         cfg = self.fresh()
         lines = read_lines(cfg["log_path"])
