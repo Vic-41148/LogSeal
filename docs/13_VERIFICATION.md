@@ -90,7 +90,19 @@ curl http://100.100.12.125:8501/_stcore/health
 ok
 ```
 
-The `vic` setup steps are in `docs/15_VIC_LAPTOP_HANDOFF.md`. This path is not yet proved end to end. The `vic` vault is pending.
+The `vic` agent started `Vault 1` on port 8101. It reported `0.0.0.0:8101`, a green status page, and two local `curl` calls that returned `Vault 1`.
+
+The controller then checked the tailnet path:
+
+```
+curl http://100.107.224.36:8101/head
+curl: (7) Failed to connect to 100.107.224.36 port 8101 after 0 ms: Could not connect to server
+
+tailscale ping -c 1 100.107.224.36
+pong from vic (100.107.224.36) via 10.18.11.54:41641 in 33ms
+```
+
+Tailscale ICMP works. TCP 8101 is refused. The firewall on `vic` is the next check. The exact commands are in `docs/15_VIC_LAPTOP_HANDOFF.md`. This path is not yet proved end to end.
 
 ## Still open
 
@@ -98,7 +110,7 @@ The `vic` setup steps are in `docs/15_VIC_LAPTOP_HANDOFF.md`. This path is not y
 |---|---|---|
 | Projector readability from 3 m | P3 | Pending |
 | P3 review of the model fail-safe message in `app.py` | P3 / lead | Pending |
-| Two physical vault laptops over the hotspot | P2 / lead | Pending |
+| Two physical vault laptops over the hotspot | P2 / lead | Pending. `Vault 1` runs on `vic`; TCP 8101 is refused over Tailscale. |
 | Two full rehearsals | Lead | Pending |
 
 Do not move an item to done until the exact command output is in this file.

@@ -181,12 +181,29 @@ On `vic`, check the listener again:
 ss -ltnp | grep 8101
 ```
 
-If the listener is correct, allow the port:
+If the listener is correct, check the firewall. A connection refused error means the host rejects the packet. A timeout means the packet is dropped.
+
+Arch with `nftables`:
+
+```bash
+sudo nft add table inet logseal
+sudo nft add chain inet logseal input '{ type filter hook input priority 0; }'
+sudo nft add rule inet logseal input iifname "tailscale0" tcp dport 8101 accept
+sudo nft list ruleset | grep 8101
+```
+
+Arch with `iptables`:
+
+```bash
+sudo iptables -I INPUT -i tailscale0 -p tcp --dport 8101 -j ACCEPT
+sudo iptables -S | grep 8101
+```
 
 Ubuntu or Debian:
 
 ```bash
 sudo ufw allow 8101/tcp
+sudo ufw reload
 ```
 
 Fedora:
@@ -196,7 +213,13 @@ sudo firewall-cmd --add-port=8101/tcp --permanent
 sudo firewall-cmd --reload
 ```
 
-Tailscale traffic usually passes without a firewall rule. Add the rule only if the controller still gets a timeout.
+Then check from `vic`:
+
+```bash
+curl -fsS http://100.107.224.36:8101/head
+```
+
+Send the result to the controller. The controller must repeat the check from `archlinux`.
 
 ### The Tailscale IP changes
 
