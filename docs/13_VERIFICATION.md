@@ -76,6 +76,22 @@ rule: 3 failures from one IP in 10 s, precision 1.0, recall 1.0, f1 1.0, 6 burst
 
 The threshold comes from unseen benign validation windows. The test set does not set it. The data is synthetic: our generator, our features, measured today. `metrics_detail.json` holds the extra values. See `docs/14_MODEL_REPORT.md` for the five-seed range.
 
+## Tailscale two-laptop path
+
+The controller `archlinux` is `100.100.12.125`. It runs `Vault 2` on port 8101 and a console on port 8501. The root `config.json` points at `Vault 2` there and at `Vault 1` on `vic` at `100.107.224.36:8101`.
+
+The controller checks passed:
+
+```
+curl http://100.100.12.125:8101/head
+{"name": "Vault 2", "count": 0, "seq": 0, "hash": "0000000000000000000000000000000000000000000000000000000000000000"}
+
+curl http://100.100.12.125:8501/_stcore/health
+ok
+```
+
+The `vic` setup steps are in `docs/15_VIC_LAPTOP_HANDOFF.md`. This path is not yet proved end to end. The `vic` vault is pending.
+
 ## Still open
 
 | Item | Owner | Status |

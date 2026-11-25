@@ -70,6 +70,7 @@ Reset: stop `gen.py`, then `python attack.py restore` (after an attack) or `pyth
 | `docs/12_PARALLEL_PLAN.md` | How the four-lane base works |
 | `docs/13_VERIFICATION.md` | What the base proved, and what is still open |
 | `docs/14_MODEL_REPORT.md` | Burst-detector design, exact numbers and improvement plan |
+| `docs/15_VIC_LAPTOP_HANDOFF.md` | Two-laptop vault setup on the `vic` laptop |
 | `docs/tasks/` | One brief per person |
 | `docs/08_DEMO_AND_PITCH.md` | Demo script and pitch |
 | `docs/09_TIMELINE_CUTS_FAILURES.md` | Timeboxes and cut order |
