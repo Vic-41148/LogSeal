@@ -1,0 +1,12 @@
+{
+  "log_path": "app.log.jsonl",
+  "ledger_path": "ledger.jsonl",
+  "hmac_key_env": "LOGSEAL_KEY",
+  "hmac_key_default": "demo-key-change-me",
+  "witnesses": [
+    {"name": "Vault 1", "url": "http://192.168.43.11:8101"},
+    {"name": "Vault 2", "url": "http://192.168.43.12:8101"}
+  ],
+  "witness_timeout_s": 1.0,
+  "pending_grace_s": 3
+}

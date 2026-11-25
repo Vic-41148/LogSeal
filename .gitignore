@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+app.log.jsonl*
+ledger.jsonl*
+witness_*.jsonl
+*.bak
+.verify_state.json
+.seen_lines.json
+model.joblib
+dataset/
+metrics.json
+bench.json
