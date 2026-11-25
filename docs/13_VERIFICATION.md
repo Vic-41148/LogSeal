@@ -21,6 +21,8 @@ Environment: Linux, Python 3.14.10, localhost vaults. Date: 2026-11-25.
 | Browser: `?mock=ok` | Green banner, three green tiles |
 | Browser: `?mock=edit` | Red banner, server ✘, both vaults ✔, record 120 named |
 | Browser: `?mock=rewrite` | Red banner, server ✔, both vaults ✘ |
+| Browser: `?mock=offline` | Green banner, Vault 2 OFFLINE, other tiles ✔ |
+| Browser: `?stage=1&mock=edit` | Sidebar and title hidden, red banner visible |
 | Browser: real edit in `.run/verify/app.log.jsonl` | Banner flipped to red 2.33 s after the edit |
 
 These numbers were measured by the lead on the development laptop. Every person must repeat them on the demo laptop before the pitch. `dataset/`, `model.joblib`, `metrics.json`, `metrics_detail.json`, `metrics_sweep.json` and `bench.json` are generated files and are not committed.
@@ -43,6 +45,8 @@ Vault 2 REJECTED the rewrite (conflict at record 20)
 ```
 
 A real-browser pass used Streamlit 1.67.0 on Python 3.12 with `LOGSEAL_CONFIG=.run/verify/config.json` and two live vaults. The console refresh fragment runs every 2 s; a one-line edit flipped the banner in 2.33 s. The console title line was fixed: a conditional expression rendered a Streamlit `DeltaGenerator` object as a large internal-methods table on every page load. It is now a plain `if` statement.
+
+P3 branch `8db9046` merged into `dev` as `48b3f48`. It adds the offline mock, the projector theme in `.streamlit/config.toml`, and larger alarm text. The merge conflict in `app.py` was resolved by keeping the P3 mock and theme work and the lead fixes for the title, file handles, per-stack cache and model fail-safe message. All four mock states and the stage mode render as listed above.
 
 ## Benchmark detail
 
