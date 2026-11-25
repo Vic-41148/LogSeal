@@ -1,9 +1,10 @@
 # Short commands for the live demo.
-# Source this file once: source scripts/demo_aliases.sh
+# Source this file once: source ~/Projects/logseal/scripts/demo_aliases.sh
 # Use LOGSEAL_STACK=<name> before source to target another stack.
 
+LOGSEAL_ROOT=${LOGSEAL_ROOT:-/home/vic/Projects/logseal}
 LOGSEAL_STACK=${LOGSEAL_STACK:-dev}
-LOGSEAL_DIR=".run/$LOGSEAL_STACK"
+LOGSEAL_DIR="$LOGSEAL_ROOT/.run/$LOGSEAL_STACK"
 LOGSEAL_CFG="$LOGSEAL_DIR/config.json"
 LOGSEAL_LOG="$LOGSEAL_DIR/app.log.jsonl"
 LOGSEAL_LED="$LOGSEAL_DIR/ledger.jsonl"
@@ -32,7 +33,7 @@ dstop() {
 }
 
 dstart() {
-  nohup python3 gen.py --config "$LOGSEAL_CFG" --rate 2 > "$LOGSEAL_DIR/gen.log" 2>&1 &
+  nohup python3 "$LOGSEAL_ROOT/gen.py" --config "$LOGSEAL_CFG" --rate 2 > "$LOGSEAL_DIR/gen.log" 2>&1 &
   local pid=$!
   python3 - "$pid" "$LOGSEAL_PIDS" <<'PY'
 import json
@@ -73,27 +74,28 @@ dundo() {
 }
 
 dattack() {
-  python3 attack.py rewrite --config "$LOGSEAL_CFG" --seq 120 --find grace --replace mallory
+  python3 "$LOGSEAL_ROOT/attack.py" rewrite --config "$LOGSEAL_CFG" --seq 120 --find grace --replace mallory
 }
 
 drestore() {
-  python3 attack.py restore --config "$LOGSEAL_CFG"
+  python3 "$LOGSEAL_ROOT/attack.py" restore --config "$LOGSEAL_CFG"
 }
 
 dburst() {
   dstart
-  python3 gen.py --attack burst --config "$LOGSEAL_CFG"
+  python3 "$LOGSEAL_ROOT/gen.py" --attack burst --config "$LOGSEAL_CFG"
 }
 
 dstatus() {
-  python3 - "$LOGSEAL_CFG" <<'PY'
-import json
+  python3 - "$LOGSEAL_ROOT" "$LOGSEAL_CFG" <<'PY'
 import sys
+
+sys.path.insert(0, sys.argv[1])
 
 import seal
 import verify
 
-cfg = seal.load_config(sys.argv[1])
+cfg = seal.load_config(sys.argv[2])
 result = verify.verify(cfg)
 print("status:", result["status"])
 print("nodes:", [(n["name"], n["agrees"], n["head_seq"]) for n in result["nodes"]])
@@ -103,16 +105,18 @@ PY
 }
 
 dreset() {
-  python3 seal.py --reset --config "$LOGSEAL_CFG"
+  python3 "$LOGSEAL_ROOT/seal.py" --reset --config "$LOGSEAL_CFG"
 }
 
 dvaults() {
-  python3 - "$LOGSEAL_CFG" <<'PY'
+  python3 - "$LOGSEAL_ROOT" "$LOGSEAL_CFG" <<'PY'
 import sys
+
+sys.path.insert(0, sys.argv[1])
 
 import seal
 
-cfg = seal.load_config(sys.argv[1])
+cfg = seal.load_config(sys.argv[2])
 for witness in cfg["witnesses"]:
     print(witness["url"] + "/")
 PY
