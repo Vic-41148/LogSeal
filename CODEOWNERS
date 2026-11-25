@@ -1,4 +1,5 @@
-# Replace the placeholder handles with the four real accounts before the first push.
+# Replace the remaining placeholder handles with real accounts before code freeze.
+# P1 is @kshitijmarwah1. P2 and P3 handles are still pending.
 # Until then this file documents the file lanes agreed in CONTRIBUTING.md.
 
 # Shared law: change only after all four people agree.
@@ -10,8 +11,8 @@
 /TASKS.md                   @team-lead
 
 # Person 1: core
-/seal.py                    @p1-core
-/verify.py                  @p1-core
+/seal.py                    @kshitijmarwah1
+/verify.py                  @kshitijmarwah1
 
 # Person 2: vault
 /witness.py                 @p2-vault

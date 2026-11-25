@@ -9,8 +9,8 @@ Environment: Linux, Python 3.14.10, localhost vaults. Date: 2026-11-25.
 | Command | Result |
 |---|---|
 | `python scripts/check_contract.py` | 38 checks pass, `CONTRACT OK` |
-| `python -m unittest discover -s tests -t .` | 50 core tests pass in about 5 s, one ML test skipped without sklearn |
-| `.venv/bin/python -m unittest discover -s tests -t .` | 55 tests pass in about 7 s |
+| `python -m unittest discover -s tests -t .` | 51 core tests pass in about 5 s, one ML test skipped without sklearn |
+| `.venv/bin/python -m unittest discover -s tests -t .` | 56 tests pass in about 7 s |
 | `python seal.py --selftest` | All 20 checks pass. `verify()` on 1,000 events: 9 ms |
 | `python scripts/demo_check.py` | All five acts pass |
 | `python gen.py --dataset dataset` | 29,055 train events, 7,448 test events |
@@ -47,6 +47,8 @@ Vault 2 REJECTED the rewrite (conflict at record 20)
 A real-browser pass used Streamlit 1.67.0 on Python 3.12 with `LOGSEAL_CONFIG=.run/verify/config.json` and two live vaults. The console refresh fragment runs every 2 s; a one-line edit flipped the banner in 2.33 s. The console title line was fixed: a conditional expression rendered a Streamlit `DeltaGenerator` object as a large internal-methods table on every page load. It is now a plain `if` statement.
 
 P3 branch `8db9046` merged into `dev` as `48b3f48`. It adds the offline mock, the projector theme in `.streamlit/config.toml`, and larger alarm text. The merge conflict in `app.py` was resolved by keeping the P3 mock and theme work and the lead fixes for the title, file handles, per-stack cache and model fail-safe message. All four mock states and the stage mode render as listed above.
+
+P1 pull request #2 from @kshitijmarwah1 merged into `dev` as `592eba5`. It adds `test_empty_log_is_ok` to `tests/test_verify_mutations.py`. The test checks that an empty log gives `OK`, zero log lines, zero ledger entries and empty findings and feed. Pull request #1 carried the same change against `main`; it was closed as a duplicate. After the merge, 51 core tests pass and 56 tests pass with scikit-learn installed.
 
 ## Benchmark detail
 
