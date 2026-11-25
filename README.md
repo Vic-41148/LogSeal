@@ -75,6 +75,7 @@ Reset: stop `gen.py`, then `python attack.py restore` (after an attack) or `pyth
 | `docs/LogSeal.pptx` | Demo presentation deck |
 | `docs/TECH FUSION 4.0 report template.pptx` | Report template supplied by the event |
 | `docs/tasks/` | One brief per person |
+| `scripts/demo_aliases.sh` | Short commands for the live demo |
 | `docs/08_DEMO_AND_PITCH.md` | Demo script and pitch |
 | `docs/09_TIMELINE_CUTS_FAILURES.md` | Timeboxes and cut order |
 | `docs/11_CLAIMS_AND_HONESTY.md` | What may be said to judges |
