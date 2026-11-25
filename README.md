@@ -22,7 +22,7 @@ The private stack gives you two vaults, a generator and a console on your own po
 | `make status NAME=p1` | Show process and vault state |
 | `make down NAME=p1` | Stop the stack |
 | `make reset NAME=p1` | Clear log, ledger and vaults |
-| `make demo-check` | All three demo acts on real vaults |
+| `make demo-check` | All five demo acts on real vaults |
 | `make ci` | Contract, tests, selftest, lint, demo acts |
 
 ## Status
