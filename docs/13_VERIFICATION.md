@@ -50,6 +50,8 @@ P3 branch `8db9046` merged into `dev` as `48b3f48`. It adds the offline mock, th
 
 P1 pull request #2 from @kshitijmarwah1 merged into `dev` as `592eba5`. It adds `test_empty_log_is_ok` to `tests/test_verify_mutations.py`. The test checks that an empty log gives `OK`, zero log lines, zero ledger entries and empty findings and feed. Pull request #1 carried the same change against `main`; it was closed as a duplicate. After the merge, 51 core tests pass and 56 tests pass with scikit-learn installed.
 
+P2 pull request #3 from @akash77007 merged into `dev` as `07fdbbc`. It escapes the vault name in the vault page, removes a trailing slash before vault URLs, and changes the page font sizes to `clamp()` values. All checks pass after the merge. A manual check with the name `<b>Vault</b>` rendered `<h1>&lt;b&gt;Vault&lt;/b&gt;</h1>`. A call to `witness.head("http://127.0.0.1:18999/")` returned the vault name and count.
+
 ## Benchmark detail
 
 ```

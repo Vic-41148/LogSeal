@@ -1,5 +1,5 @@
 # Replace the remaining placeholder handles with real accounts before code freeze.
-# P1 is @kshitijmarwah1. P2 and P3 handles are still pending.
+# P1 is @kshitijmarwah1. P2 is @akash77007. The P3 handle is still pending.
 # Until then this file documents the file lanes agreed in CONTRIBUTING.md.
 
 # Shared law: change only after all four people agree.
@@ -15,7 +15,7 @@
 /verify.py                  @kshitijmarwah1
 
 # Person 2: vault
-/witness.py                 @p2-vault
+/witness.py                 @akash77007
 
 # Person 3: console
 /app.py                     @p3-console

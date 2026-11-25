@@ -20,10 +20,10 @@ Your `NAME` is your lane: `p1`, `p2`, `p3`, `p4`. Each name gets its own ports, 
 | P1-2 | P1 core @kshitijmarwah1 | Check verify speed | 1,000 events verify in under 1 s on the demo laptop |
 | P1-3 | P1 core @kshitijmarwah1 | Check `confirmed_by` and `detail` text for the console | An edit names record N and both vaults |
 | P1-4 | P1 core @kshitijmarwah1 | Read `seal.py` write order | Log is written and fsynced before the ledger |
-| P2-1 | P2 vault | Check every HTTP row in `03_CONTRACT.md` | `tests/test_witness_api.py` passes |
-| P2-2 | P2 vault | Read the vault page from 3 m | Large name, count, fingerprint, red conflict strip |
-| P2-3 | P2 vault | Start two vaults and `curl` both | `/head`, `/entry/1`, `/append`, `/reset` answer |
-| P2-4 | P2 vault | Restart a vault after a conflict | Entries and conflict history survive |
+| P2-1 | P2 vault @akash77007 | Check every HTTP row in `03_CONTRACT.md` | `tests/test_witness_api.py` passes |
+| P2-2 | P2 vault @akash77007 | Read the vault page from 3 m | Large name, count, fingerprint, red conflict strip |
+| P2-3 | P2 vault @akash77007 | Start two vaults and `curl` both | `/head`, `/entry/1`, `/append`, `/reset` answer |
+| P2-4 | P2 vault @akash77007 | Restart a vault after a conflict | Entries and conflict history survive |
 | P3-1 | P3 console | Open `?mock=ok`, `?mock=edit`, `?mock=rewrite` | Banner and all three tiles change correctly |
 | P3-2 | P3 console | Wire the real verifier | An edit turns the banner red in 3 s and shows the record |
 | P3-3 | P3 console | Kill one vault | That tile goes grey, the console keeps running |
