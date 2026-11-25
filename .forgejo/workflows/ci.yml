@@ -21,7 +21,7 @@ jobs:
         run: python -m unittest discover -s tests -t . -v
       - name: Core selftest
         run: python seal.py --selftest
-      - name: Three demo acts on real vaults
+      - name: Five demo acts on real vaults
         run: python scripts/demo_check.py
       - name: Lint
         run: ruff check .

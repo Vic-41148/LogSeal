@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the three demo acts against real vaults and assert the result.
+"""Run the five demo acts against real vaults and assert the result.
 
 This is the automated version of the rehearsal:
   1. live green

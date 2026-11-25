@@ -10,7 +10,7 @@ help:
 	@echo "make test      full test suite (stdlib unittest)"
 	@echo "make selftest  20-check core mutation selftest"
 	@echo "make ci        check + test + selftest + lint"
-	@echo "make demo-check  run all three demo acts on real vaults"
+	@echo "make demo-check  run all five demo acts on real vaults"
 	@echo "make stack     private vaults on ports for your name"
 	@echo "make demo      private vaults + generator + console"
 	@echo "make down      stop your stack"
