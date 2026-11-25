@@ -1,6 +1,6 @@
 """LogSeal verifier: re-hash the raw log, compare with the ledger and the vaults.
 CLI: python verify.py [--config PATH] [--watch]"""
-import argparse, hmac, json, os, sys, time
+import argparse, hmac, json, os, time
 from datetime import datetime
 import seal
 try:
@@ -83,13 +83,15 @@ def verify(cfg=None, log_path=None, ledger_path=None, use_witnesses=True):
     sp = _state_path(log_path)
     if f is None and len(L) > len(G):                       # trailing lines not yet sealed
         try:
-            st = json.load(open(sp))
+            with open(sp) as f:
+                st = json.load(f)
         except Exception:
             st = {}
         if st.get("count") != len(G):
             st = {"count": len(G), "since": now}
             try:
-                json.dump(st, open(sp, "w"))
+                with open(sp, "w") as f:
+                    json.dump(st, f)
             except OSError:
                 pass
         if now - st["since"] > cfg.get("pending_grace_s", 3):

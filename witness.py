@@ -1,7 +1,7 @@
 """LogSeal vault (witness): independent append-only store of (seq, prev, hash).
 Server : python witness.py --name "Vault 1" --port 8101 [--allow-reset] [--dir DIR]
 Client : push(entry, cfg), head(url, timeout), entry(url, seq, timeout), reset(cfg)  (stdlib only)"""
-import argparse, json, os, re, socket, threading, time, urllib.request, urllib.error
+import argparse, json, os, re, socket, socketserver, threading, time, urllib.request, urllib.error
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 ZERO = "0" * 64
@@ -19,6 +19,8 @@ def _req(url, body=None, timeout=1.0):
             return e.code, json.loads(e.read() or b"{}")
         except Exception:
             return e.code, {}
+        finally:
+            e.close()
 
 def _push_one(w, entry, timeout):
     body = {k: entry[k] for k in ("seq", "prev", "hash")}
@@ -82,7 +84,9 @@ class Vault:
     def _load(path):
         out = []
         if os.path.exists(path):
-            for ln in open(path, "rb").read().split(b"\n"):
+            with open(path, "rb") as f:
+                raw = f.read()
+            for ln in raw.split(b"\n"):
                 try:
                     out.append(json.loads(ln))
                 except Exception:
@@ -199,6 +203,14 @@ def _lan_ip():
     except Exception:
         return "127.0.0.1"
 
+class VaultServer(ThreadingHTTPServer):
+    """HTTPServer.server_bind() calls socket.getfqdn(), a reverse DNS lookup that can
+    block for many seconds on a venue network. Bind first, never resolve names."""
+    def server_bind(self):
+        socketserver.TCPServer.server_bind(self)
+        self.server_name = self.server_address[0]
+        self.server_port = self.server_address[1]
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--name", default="Vault 1"); ap.add_argument("--port", type=int, default=8101)
@@ -206,7 +218,7 @@ if __name__ == "__main__":
     ap.add_argument("--dir", default=os.path.dirname(os.path.abspath(__file__)))
     a = ap.parse_args()
     v = Vault(a.name, a.dir, a.allow_reset)
-    srv = ThreadingHTTPServer(("0.0.0.0", a.port), make_handler(v))
+    srv = VaultServer(("0.0.0.0", a.port), make_handler(v))
     print(f"{a.name} listening: http://{_lan_ip()}:{a.port}/  (holds {len(v.entries)} records)", flush=True)
     try:
         srv.serve_forever()

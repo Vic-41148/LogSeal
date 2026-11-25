@@ -1,0 +1,46 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  contract-and-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dev tools
+        run: python -m pip install -r requirements-dev.txt
+      - name: Contract check
+        run: python scripts/check_contract.py
+      - name: Unit and integration tests
+        run: python -m unittest discover -s tests -t . -v
+      - name: Core selftest
+        run: python seal.py --selftest
+      - name: Lint
+        run: ruff check .
+
+  scenarios-and-ml:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install runtime tools
+        run: python -m pip install -r requirements.txt
+      - name: Benchmark on a copy of the log
+        run: python bench.py
+      - name: Generate synthetic dataset
+        run: python gen.py --dataset dataset
+      - name: Train and evaluate the burst detector
+        run: |
+          python ml.py train
+          python ml.py eval
+      - name: Check measured outputs exist
+        run: python -c "import json; json.load(open('bench.json')); m=json.load(open('metrics.json')); assert set(m) >= {'precision','recall','f1','threshold'}"

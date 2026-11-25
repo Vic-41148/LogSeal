@@ -1,0 +1,31 @@
+# Replace the placeholder handles with the four real accounts before the first push.
+# Until then this file documents the file lanes agreed in CONTRIBUTING.md.
+
+# Shared law: change only after all four people agree.
+/config.json                @team-lead
+/config.local.json          @team-lead
+/docs/03_CONTRACT.md        @team-lead
+/docs/12_PARALLEL_PLAN.md   @team-lead
+/CODEOWNERS                 @team-lead
+/TASKS.md                   @team-lead
+
+# Person 1: core
+/seal.py                    @p1-core
+/verify.py                  @p1-core
+
+# Person 2: vault
+/witness.py                 @p2-vault
+
+# Person 3: console
+/app.py                     @p3-console
+
+# Person 4: scenarios and measurement
+/gen.py                     @p4-scenarios
+/attack.py                  @p4-scenarios
+/ml.py                      @p4-scenarios
+/bench.py                   @p4-scenarios
+
+# Shared support. Any owner may propose a change; the lead merges it.
+/tests/                     @team-lead
+/scripts/                   @team-lead
+/Makefile                   @team-lead

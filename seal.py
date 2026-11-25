@@ -73,13 +73,15 @@ def append(evt, cfg):
 def _ledger_entries(cfg):
     out = []
     try:
-        for ln in open(cfg["ledger_path"], "rb").read().split(b"\n"):
-            try:
-                out.append(json.loads(ln))
-            except Exception:
-                pass
+        with open(cfg["ledger_path"], "rb") as f:
+            raw = f.read()
     except FileNotFoundError:
-        pass
+        return out
+    for ln in raw.split(b"\n"):
+        try:
+            out.append(json.loads(ln))
+        except Exception:
+            pass
     return out
 
 def resync(cfg):
@@ -109,7 +111,8 @@ def rebuild_ledger(cfg, key=None):
     """Recompute the whole ledger from the current log lines with the real key.
     Used by attack.py (root attacker) and the selftest. Not part of normal operation."""
     key = key or get_key(cfg)
-    lines = [l for l in open(cfg["log_path"], "rb").read().split(b"\n")[:-1]]
+    with open(cfg["log_path"], "rb") as f:
+        lines = f.read().split(b"\n")[:-1]
     prev, out = ZERO, []
     for i, raw in enumerate(lines, 1):
         line = raw.decode("utf-8", "replace")
@@ -119,19 +122,38 @@ def rebuild_ledger(cfg, key=None):
     with open(cfg["ledger_path"], "wb") as f:
         f.write(("\n".join(out) + ("\n" if out else "")).encode())
 
+def _free_port():
+    """Ask the OS for a free localhost port. Tests must not use a fixed port:
+    four people may run the suite at the same time on one machine."""
+    import socket
+    with socket.socket() as s:
+        s.bind(("127.0.0.1", 0))
+        return s.getsockname()[1]
+
+def _start_test_vault(tmp):
+    """Start witness.py on a free port. Retry when another process takes the port first."""
+    import subprocess
+    for _ in range(5):
+        port = _free_port()
+        proc = subprocess.Popen([sys.executable, os.path.join(HERE, "witness.py"), "--name", "T1", "--port", str(port),
+                                 "--allow-reset", "--dir", tmp], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        vurl = f"http://127.0.0.1:{port}"
+        for _ in range(60):
+            if witness.head(vurl, 0.2) is not None:
+                return proc, vurl
+            if proc.poll() is not None:
+                break
+            time.sleep(0.1)
+        proc.terminate(); proc.wait()
+    raise RuntimeError("could not start the test vault")
+
 # ------------------------------------------------------------------ selftest (mutation tests)
 def selftest():
-    import random, shutil, subprocess, tempfile, threading
+    import atexit, random, shutil, tempfile, threading
     import gen, verify as V
     tmp, fails = tempfile.mkdtemp(prefix="logseal_"), []
-    port = 18101
-    proc = subprocess.Popen([sys.executable, os.path.join(HERE, "witness.py"), "--name", "T1", "--port", str(port),
-                             "--allow-reset", "--dir", tmp], stdout=subprocess.DEVNULL)
-    vurl = f"http://127.0.0.1:{port}"
-    for _ in range(50):
-        if witness.head(vurl, 0.3) is not None:
-            break
-        time.sleep(0.1)
+    proc, vurl = _start_test_vault(tmp)
+    atexit.register(lambda: proc.poll() is None and proc.terminate())
 
     def check(name, cond, extra=""):
         print(("PASS  " if cond else "FAIL  ") + name + (f"   {extra}" if extra else ""))

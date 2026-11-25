@@ -1,5 +1,8 @@
 .venv/
 __pycache__/
+*.pyc
+.run/
+.env
 app.log.jsonl*
 ledger.jsonl*
 witness_*.jsonl
@@ -10,3 +13,5 @@ model.joblib
 dataset/
 metrics.json
 bench.json
+.ruff_cache/
+.DS_Store
