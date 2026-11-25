@@ -22,6 +22,20 @@ dshow() {
   echo "Vault 2: http://100.100.12.125:18525/"
 }
 
+dpath() {
+  echo "$LOGSEAL_LOG"
+}
+
+dopen() {
+  if command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "$LOGSEAL_LOG"
+  elif command -v code >/dev/null 2>&1; then
+    code "$LOGSEAL_LOG"
+  else
+    echo "$LOGSEAL_LOG"
+  fi
+}
+
 dstop() {
   local pid
   pid=$(_dgen_pid)
