@@ -67,6 +67,8 @@ Browser checks on the merged console at `http://127.0.0.1:8501/`:
 
 The model fail-safe text is still in `app.py`. It says `Model not trained. Run make dataset then make train`. Both added `.pptx` files open as valid zip archives.
 
+A third vault was added on `vic-home-server` at `100.81.208.118:8101`. `config.json` now lists three vaults. `witness_timeout_s` was raised from 1.0 to 5.0 because 1.0 s timed out over Tailscale and the vault fell behind. After a reset and replay, all three vaults held the same fingerprint. Stopping the generator gave `status: OK` with all four nodes agreeing. The setup and the honest claim are in `docs/17_HOME_SERVER_THIRD_VAULT.md`.
+
 A live edit test on the merged stack changed record 120 in `.run/dev/app.log.jsonl` from `srv-01` to `srv-02`. The generator was stopped first. The verifier reported `TAMPERED` in 0.11 s. The finding class was `EDIT`, the record was 120, and `confirmed_by` held `Vault 1` and `Vault 2`. The server tile disagreed. Both vault tiles agreed. The operator restored both files, and the verifier returned `OK`. The generator was restarted. The exact operator steps are in `docs/08_DEMO_AND_PITCH.md`.
 
 ## Benchmark detail

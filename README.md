@@ -72,6 +72,7 @@ Reset: stop `gen.py`, then `python attack.py restore` (after an attack) or `pyth
 | `docs/14_MODEL_REPORT.md` | Burst-detector design, exact numbers and improvement plan |
 | `docs/15_VIC_LAPTOP_HANDOFF.md` | Two-laptop vault setup on the `vic` laptop |
 | `docs/16_WINDOWS_TWO_LAPTOP_HANDOFF.md` | Two Windows laptops linked over Tailscale |
+| `docs/17_HOME_SERVER_THIRD_VAULT.md` | Third vault on the home server |
 | `docs/LogSeal.pptx` | Demo presentation deck |
 | `docs/TECH FUSION 4.0 report template.pptx` | Report template supplied by the event |
 | `docs/tasks/` | One brief per person |
